@@ -1038,6 +1038,14 @@ class MySQLConnectionConfig(ConnectionConfig):
         return connect
 
 
+class DorisConnectionConfig(MySQLConnectionConfig):
+    type_: Literal["doris"] = Field(alias="type", default="doris")
+
+    @property
+    def _engine_adapter(self) -> t.Type[EngineAdapter]:
+        return engine_adapter.DorisEngineAdapter
+
+
 class MSSQLConnectionConfig(ConnectionConfig):
     host: str
     user: t.Optional[str] = None

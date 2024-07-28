@@ -9,6 +9,7 @@ from sqlmesh.core.engine_adapter.base import (
 from sqlmesh.core.engine_adapter.bigquery import BigQueryEngineAdapter
 from sqlmesh.core.engine_adapter.databricks import DatabricksEngineAdapter
 from sqlmesh.core.engine_adapter.duckdb import DuckDBEngineAdapter
+from sqlmesh.core.engine_adapter.doris import DorisEngineAdapter
 from sqlmesh.core.engine_adapter.mssql import MSSQLEngineAdapter
 from sqlmesh.core.engine_adapter.mysql import MySQLEngineAdapter
 from sqlmesh.core.engine_adapter.postgres import PostgresEngineAdapter
@@ -21,6 +22,7 @@ DIALECT_TO_ENGINE_ADAPTER = {
     "hive": SparkEngineAdapter,
     "spark": SparkEngineAdapter,
     "bigquery": BigQueryEngineAdapter,
+    "doris": DorisEngineAdapter,
     "duckdb": DuckDBEngineAdapter,
     "snowflake": SnowflakeEngineAdapter,
     "databricks": DatabricksEngineAdapter,
