@@ -9,6 +9,7 @@ from sqlmesh.core.engine_adapter.mysql import MySQLEngineAdapter
 from sqlmesh.core.engine_adapter.shared import (
     set_catalog,
 )
+from sqlmesh.core.node import IntervalUnit
 
 if t.TYPE_CHECKING:
     from sqlmesh.core._typing import TableName
@@ -24,6 +25,31 @@ class DistributedByRandom(exp.Property):
 @set_catalog()
 class DorisEngineAdapter(MySQLEngineAdapter):
     DIALECT = "doris"
+
+    def _build_table_properties_exp(
+        self,
+        catalog_name: t.Optional[str] = None,
+        storage_format: t.Optional[str] = None,
+        partitioned_by: t.Optional[t.List[exp.Expression]] = None,
+        partition_interval_unit: t.Optional[IntervalUnit] = None,
+        clustered_by: t.Optional[t.List[str]] = None,
+        table_properties: t.Optional[t.Dict[str, exp.Expression]] = None,
+        columns_to_types: t.Optional[t.Dict[str, exp.DataType]] = None,
+        table_description: t.Optional[str] = None,
+        table_kind: t.Optional[str] = None,
+    ) -> t.Optional[exp.Properties]:
+        properties: t.List[exp.Expression] = []
+
+        properties.append(
+            exp.Property(
+                this=exp.Literal.string("replication_allocation"),
+                value=exp.Literal.string("tag.location.default: 1"),
+            )
+        )
+
+        if properties:
+            return exp.Properties(expressions=properties)
+        return None
 
     def create_view(
         self,
